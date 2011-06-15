@@ -1,0 +1,91 @@
+<?php
+
+define('IN_DEVELOPMENT', APPLICATION_ENV === 'development');
+
+// CSS stylesheets
+$this->headLink()->prependStylesheet($this->baseUrl('/css/styles.css'));
+$this->headLink()->prependStylesheet($this->baseUrl('/css/prettyphoto.css'));
+
+// Website favicon
+$this->headLink(array('rel' => 'icon', 'href' => '/vnj.ico', 'type' => 'image/x-icon')); 
+
+// JavaScript script files
+$this->headScript()->prependFile($this->baseUrl('/js/jquery-1.4.4.min.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/cufon-yui.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/pt_sans.font.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/pt_sans_narrow.font.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/jquery.prettyphoto.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/custom.js'));
+
+$this->headMeta('description', $this->domain->getDescription());
+$this->headMeta('keywords', $this->domain->getKeywords());
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+	<!--[if lte IE 8]>						
+			<link rel="stylesheet" href="<?= $this->baseUrl('/css/stylesIE.css')?>" type="text/css" media="screen" />
+		<![endif]-->
+		
+		 <!--[if lte IE 7]>				
+			<link rel="stylesheet" href="<?= $this->baseUrl('/css/stylesIE7.css')?>" type="text/css" media="screen" />
+	<![endif]-->		
+<?php 
+	echo $this->headTitle() . "\n";
+	echo $this->headMeta()  . "\n";
+	echo $this->headLink()  . "\n";
+	echo $this->headScript(). "\n";	
+?>	
+	
+  
+</head> 
+
+<body class="<?= $this->pageVars['body']; ?>">
+
+    <div id="bg">
+		<img src="" class="<?= $this->pageVars['background']; ?>" />
+    </div>
+    
+    <!-- Wrapper starts here -->
+	<div id="wrapper">
+		
+	     <!-- Navigation starts here -->	 
+		<div id="menu_wrap">
+			
+			<!-- Menu starts here -->
+			<div id="menu">
+		    	
+				<!-- Logo -->
+		      	<div id="logo">   
+			        <h1><a href="<?= $this->publicUrl(); ?>" class="logo_image index" >v&j logo</a></h1>      
+		      	</div>
+		      	<!-- Logo ends here -->		      
+		      		       
+		    </div>
+		    <!-- Menu ends here -->
+		    
+		    <!-- Hide menu arrow -->
+		    <div id="hide_menu">  
+		    	
+		    </div>
+		    <!-- Hide menu arrow ends here -->
+		       
+		</div>
+		<!-- Navigation ends here -->
+  
+			<?php echo $this->layout()->content; ?>
+  
+  </div>
+  <!-- Wrapper ends here -->
+  	
+<script>
+	Cufon.now();     
+
+	<?php if(APPLICATION_ENV != 'development'): ?>
+		
+		<?=	$this->domain->getGoogleAnalytics(); ?>
+		
+	<?php endif; ?>
+</script>
+</body>
+</html>	

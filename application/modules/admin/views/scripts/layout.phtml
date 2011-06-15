@@ -1,0 +1,59 @@
+<?php 
+define('IN_DEVELOPMENT', APPLICATION_ENV === 'development');
+
+$this->headLink()->prependStylesheet($this->baseUrl('/css/admin/jquery-ui/jquery-ui-1.8.7.custom.css'));
+$this->headLink()->prependStylesheet($this->baseUrl('/css/admin/admin.css'));
+
+$this->headScript()->prependFile($this->baseUrl('/js/admin/behaviour.js'));
+
+if($this->action['controller'] == 'pictures' && $this->action['action'] == 'edit') :
+else: 
+	$this->headScript()->prependFile($this->baseUrl('/js/admin/globals.js'));
+	$this->headScript()->prependFile($this->baseUrl('/js/jquery-form-2.52.js'));
+	$this->headScript()->prependFile($this->baseUrl('/js/jquery-ui-1.8.7.custom.min.js'));
+	$this->headScript()->prependFile($this->baseUrl('/js/jquery-1.4.4.min.js'));
+endif;
+
+$this->headLink(array('rel' => 'icon', 'href' => '/vnj.ico', 'type' => 'image/x-icon')); 
+
+echo $this->doctype() . "\n" ;
+?>
+
+<html xmlns="http://www.w3.org/1999/xhtml"> 
+<head profile="http://www.w3.org/2005/10/profile">
+
+<?php 
+	echo $this->headTitle() . "\n";
+	echo $this->headMeta()  . "\n";
+	echo $this->headLink()  . "\n";
+	echo $this->headScript(). "\n";
+?>			
+	<!--[if lte IE 6]><link media="screen" rel="stylesheet" type="text/css" href="<?= $this->baseUrl('/css/admin/admin-ie.css') ?>" /><![endif]-->
+
+	</head>
+
+	<body>
+		<?= $this->partial('dialogs.phtml'); ?>
+		
+		<!--[if !IE]>start wrapper<![endif]-->
+			<div id="wrapper">				
+				<?= $this->partial('layout_header.phtml', array('user' => $this->user, 'lastLoggedInInfo' => $this->lastLoggedInInfo,
+																	   'params' => $this->action)) ?>				
+				<!--[if !IE]>start content<![endif]-->
+				<div id="content">
+					<!--[if !IE]>start page<![endif]-->
+					<div id="page">
+						<div class="inner"> 
+							<?= $this->layout()->content ?>									
+						</div>
+					</div>
+					<!--[if !IE]>end page<![endif]-->
+					<?= $this->partial('layout_sidebar.phtml', array('params' => $this->action)); ?>
+				</div>
+				<!--[if !IE]>end content<![endif]-->		
+			</div>
+		<!--[if !IE]>end wrapper<![endif]-->	
+			<?php echo $this->partial('layout_footer.phtml') ?> 			
+	</body>
+  
+</html>

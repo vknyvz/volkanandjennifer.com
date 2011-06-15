@@ -1,0 +1,14 @@
+<ul class="system_messages">
+	<li class="red">
+		<span class="ico"></span>
+		<strong class="system_title">
+			<?php
+				  foreach($this->errors as $error):
+					echo $error['message']. '<br/>';
+			  	  endforeach;
+			?>		
+		</strong>
+	</li>
+</ul>
+<br />
+

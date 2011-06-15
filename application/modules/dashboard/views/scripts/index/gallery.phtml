@@ -1,0 +1,35 @@
+<!-- Main -->
+	   <div id="main">   			 	
+      		<h2 class="section_title"><?= $this->album->getAlbumNamewithYear(); ?></h2>     
+      			<div class="post">
+      			<div class="metadata">
+					     <p class="post_comments"><?= $this->album['albumLocation']; ?></p>
+					     <a href="#" class="post_comments"><?= $this->albumTotal[$this->album->getId()]; ?> pictures</a>
+					</div>
+      			</div>
+      			<div id="gallery_prettyphoto" class="gallery">
+				   <ul class="gallery_4columns">
+				   		<?php		
+				   			foreach($this->pictures as $picture) :
+					   	?>
+			     		<li>
+			     			<a href="<?= $this->publicUrl('show', null); ?>/image/<?= $this->randomPictureId[$picture['pictureId']]; ?>" 
+			     			   id="<?= $this->randomPictureId[$picture['pictureId']]; ?>" 
+			     			   class="image" 
+			     			   title="<?= $picture['pictureDescription']; ?> (Viewed <?= $picture['count']; ?> times)" 
+			     			   rel="prettyPhoto[<?= $this->album->getId();?>]">
+			     				<img src="<?= $this->publicUrl('show', null); ?>/thumbnail/<?= $this->randomPictureId[$picture['pictureId']]; ?>/">
+			     			</a>
+			     		</li>
+			     		<?php endforeach; ?>
+				  </ul>													
+			</div>	
+			<!-- Gallery ends here -->
+      </div>
+<!-- Main ends here -->
+      
+<script type="text/javascript">
+	$('.image').bind('click', function() {				
+		countPicture($(this).attr('id'));	
+	});	
+</script>	

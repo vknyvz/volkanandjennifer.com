@@ -1,0 +1,166 @@
+<?php 
+	$this->headScript()
+		->prependFile($this->baseUrl('/js/admin/fancyupload/FancyUpload2.js'))
+		->prependFile($this->baseUrl('/js/admin/fancyupload/Fx.ProgressBar.js'))
+		->prependFile($this->baseUrl('/js/admin/fancyupload/Swiff.Uploader.js'))
+		->prependFile($this->baseUrl('/js/admin/fancyupload/mootools-more-1.3.1.1.js'))
+		->prependFile($this->baseUrl('/js/admin/fancyupload/mootools.js'));
+			
+	$this->headLink()->prependStylesheet($this->baseUrl('/js/admin/fancyupload/fancyupload.css'));	
+?>
+
+<script type="text/javascript">		
+	window.addEvent('domready', function() { 
+	
+		// vkNgine settings
+		debug = <?php echo ( APPLICATION_ENV == 'development' ? 'true' : 'false'); ?>;
+		formUrl = '<?= $this->baseUrl('/pictureUpload.php'); ?>';
+		fancyUploaderPath = '<?= $this->baseUrl('/js/admin/fancyupload/Swiff.Uploader.swf'); ?>';
+		browseButton = 'demo-browse';
+		submitButton = 'row-submit';
+		uploadButton = 'demo-upload';
+		clearButton = 'demo-clear';
+		overallWrapper = 'demo-status';
+		fileList = 'demo-list';
+		pictureIds = 'pictureids';
+		progress = 'progress';	
+		
+		var up = new FancyUpload2($(overallWrapper), $(fileList), { // options object
+			verbose: debug,
+			url: formUrl, 
+			path: fancyUploaderPath,
+			typeFilter: {
+				'Images (*.jpg, *.jpeg, *.gif, *.png)': '*.jpg; *.jpeg; *.gif; *.png'
+			},
+			target: browseButton,
+			
+			onLoad: function() {
+				$(overallWrapper).removeClass('hide'); // we show the actual UI
+				
+				this.target.addEvents({
+					click: function() {
+						return false;
+					},
+					mouseenter: function() {
+						this.addClass('hover');
+					},
+					mouseleave: function() {
+						this.removeClass('hover');
+						this.blur();
+					},
+					mousedown: function() {
+						this.focus();
+					}
+				});
+		        
+				if($(progress))
+					$(progress).hide();
+				if($(submitButton))
+					$(submitButton).hide();
+				
+				$(clearButton).addEvent('click', function() {
+					up.remove(); // remove all files
+					if ($(pictureIds))
+			            $(pictureIds).value = '';
+		            if ($(progress))
+			            $(progress).hide();
+		            if ($(submitButton))
+			            $(submitButton).hide();
+					return false;
+				});
+	
+				$(uploadButton).addEvent('click', function() {
+					up.start(); // start upload
+					$(progress).show(); 
+					$(submitButton).show();
+					return false;
+				});
+	
+				$(overallWrapper).hide();
+				$(progress).hide(); 
+				$(submitButton).hide();		
+	
+				$('albumId').addEvent('change', function() {
+					$(overallWrapper).show();
+					$(uploadButton).hide();
+					return false;
+				});	
+			},
+			
+			onSelectFail: function(files) {
+				files.each(function(file) {
+					new Element('li', {
+						'class': 'validation-error',
+						html: file.validationErrorMessage || file.validationError,
+						title: MooTools.lang.get('FancyUpload', 'removeTitle'),
+						events: {
+							click: function() {
+								this.destroy();
+							}
+						}
+					}).inject(this.list, 'top');
+				}, this);
+			},
+	
+			onSelectSuccess: function(file) {	        
+				$(uploadButton).show(); 
+		      },
+			
+			onFileSuccess: function(file, response) {
+				var json = new Hash(JSON.decode(response, true) || {});
+				
+				if (json.get('status') == '1') {
+					file.element.addClass('file-success');
+					file.info.set('html', '<strong>Image was uploaded:</strong> ' + json.get('width') + ' x ' + json.get('height') + 'px, <em>' + json.get('mime') + '</em>)');
+					file.pictureId = json.get('pictureId'); 
+					var fileids = $(pictureIds);
+					if(fileids) {
+						if(fileids.value.length)
+							fileids.value += ' ';
+			            fileids.value += json.get('pictureId');
+					}
+				} else {
+					file.element.addClass('file-failed');
+					file.info.set('html', '<strong>An error occured:</strong> ' + (json.get('error') ? (json.get('error') + ' #' + json.get('code')) : response));
+				}
+			},
+				
+			onFail: function(error) {
+				switch (error) {
+					case 'hidden': // works after enabling the movie and clicking refresh
+						alert('To enable the embedded uploader, unblock it in your browser and refresh (see Adblock).');
+						break;
+					case 'blocked': // This no *full* fail, it works after the user clicks the button
+						alert('To enable the embedded uploader, enable the blocked Flash movie (see Flashblock).');
+						break;
+					case 'empty': // Oh oh, wrong path
+						alert('A required file was not found, please be patient and we fix this.');
+						break;
+					case 'flash': // no flash 9+ :(
+						alert('To enable the embedded uploader, install the latest Adobe Flash plugin.')
+				}
+			}					
+		});				
+	});					
+</script>
+
+	<div id="demo-status" class="hide">
+		<p>
+			<a href="#" id="demo-browse">Add Image</a> |
+			<a href="#" id="demo-clear">Clear List</a> |
+			<a href="#" id="demo-upload">Start Upload</a>								
+		</p>
+		<div id="progress">
+			<div>
+				<strong class="overall-title"></strong><br />
+				<img src="/js/admin/fancyupload/images/progress-bar/bar.gif" class="progress overall-progress" />
+			</div>
+			<div>
+				<strong class="current-title"></strong><br />
+				<img src="/js/admin/fancyupload/images/progress-bar/bar.gif" class="progress current-progress" />
+			</div>
+		</div>
+		<div class="current-text"></div>
+	</div>
+
+	<ul id="demo-list"></ul>

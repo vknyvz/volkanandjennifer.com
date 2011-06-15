@@ -1,0 +1,147 @@
+<?php
+
+define('IN_DEVELOPMENT', APPLICATION_ENV === 'development');
+
+// CSS stylesheets
+$this->headLink()->prependStylesheet($this->baseUrl('/css/styles.css'));
+$this->headLink()->prependStylesheet($this->baseUrl('/css/prettyphoto.css'));
+
+// Website favicon
+$this->headLink(array('rel' => 'icon', 'href' => '/vnj.ico', 'type' => 'image/x-icon')); 
+
+// JavaScript script files
+$this->headScript()->appendFile($this->baseUrl('/js/jquery-1.4.4.min.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/cufon-yui.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/pt_sans.font.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/pt_sans_narrow.font.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/jquery.prettyphoto.js'));
+$this->headScript()->appendFile($this->baseUrl('/js/custom.js'));
+
+$this->headMeta('description', $this->domain->getDescription());
+$this->headMeta('keywords', $this->domain->getKeywords());
+?>
+<!DOCTYPE html>
+<html>
+	<head>
+	<!--[if lte IE 8]>						
+			<link rel="stylesheet" href="<?= $this->baseUrl('/css/stylesIE.css')?>" type="text/css" media="screen" />
+		<![endif]-->
+		
+		 <!--[if lte IE 7]>				
+			<link rel="stylesheet" href="<?= $this->baseUrl('/css/stylesIE7.css')?>" type="text/css" media="screen" />
+	<![endif]-->		
+<?php 
+	echo $this->headTitle() . "\n";
+	echo $this->headMeta()  . "\n";
+	echo $this->headLink()  . "\n";
+	echo $this->headScript(). "\n";	
+?>	
+	
+</head> 
+
+<body class="<?= $this->pageVars['body']; ?>">
+	<!-- Powered by vkNgine version <?= vkNgine_Version::VERSION; ?> -->
+    <div id="bg">
+		<img src="" class="<?= $this->pageVars['background']; ?>" />
+    </div>
+    
+    <!-- Wrapper starts here -->
+	<div id="wrapper">
+		
+	     <!-- Navigation starts here -->	 
+		<div id="menu_wrap">
+			
+			<!-- Menu starts here -->
+			<div id="menu">
+		    	
+				<!-- Logo -->
+		      	<div id="logo">   
+			        <h1><a href="<?= $this->publicUrl(); ?>" class="logo_image index" >v&j logo</a></h1>      
+		      	</div>
+		      	<!-- Logo ends here -->		      
+		      	
+		      	<!-- Navbar -->
+			    <ul id="navbar">
+			        <li><a class="loginCufon" href="<?= $this->baseUrl . '/auth/logout'; ?>"> Welcome, <?= $this->user->getFullname(); ?><span>Logout</span></a></li>  
+			        <li class="top_nav"><a id="<?= $this->pageVars['idHome']; ?>" class="index" href="<?= $this->publicUrl(); ?>">Home<span>back to the home page</span></a></li>  
+			        <li class="top_nav"><a id="<?= $this->pageVars['idAbout']; ?>" href="<?= $this->publicUrl('about', null); ?>">About<span>who we are</span></a></li>
+			        <li class="top_nav"><a id="<?= $this->pageVars['idPortfolio']; ?>">Pictures<span>what we are proud of</span></a>
+			              <ul>
+			              	<li class="galeri"><a>2007</a>
+			              		<ul>
+			              		<?php foreach($this->albums->fetchAlll(2007, 'PUBLIC') as $album) : ?>		                     	
+		                     		<li class="galeri"><a class="galeri" href="<?= $this->publicUrl('gallery', null); ?>/album/<?= $album['albumId']?>"><?= $album['albumName']?> </a></li>
+		                     	<?php endforeach; ?>
+		                     	</ul>	
+		                     </li>
+			              	<li class="galeri"><a>2008</a>
+			              		<ul>
+			              		<?php foreach($this->albums->fetchAlll(2008, 'PUBLIC') as $album) : ?>		                     	
+		                     		<li class="galeri"><a class="galeri" href="<?= $this->publicUrl('gallery', null); ?>/album/<?= $album['albumId']?>"><?= $album['albumName']?> </a></li>
+		                     	<?php endforeach; ?>
+		                     	</ul>	
+		                     </li>
+			              	<li class="galeri"><a>2009</a>
+			              		<ul>
+			              		<?php foreach($this->albums->fetchAlll(2009, 'PUBLIC') as $album) : ?>		                     	
+		                     		<li class="galeri"><a class="galeri" href="<?= $this->publicUrl('gallery', null); ?>/album/<?= $album['albumId']?>"><?= $album['albumName']?> </a></li>
+		                     	<?php endforeach; ?>
+		                     	</ul>	
+		                     </li>	
+		                     <li class="galeri"><a>2010</a>
+		                     	<ul>
+			              		<?php foreach($this->albums->fetchAlll(2010, 'PUBLIC') as $album) : ?>
+		                     		<li class="galeri"><a class="galeri" href="<?= $this->publicUrl('gallery', null); ?>/album/<?= $album['albumId']?>"><?= $album['albumName']?> </a></li>		                      		 
+		                     		
+		                     	<?php endforeach; ?>
+		                     	</ul>
+		                     </li>	
+		                     <li class="galeri"><a>2011</a>
+			              		<ul>
+		                     	<?php foreach($this->albums->fetchAlll(2011, 'PUBLIC') as $album) : ?>
+		                     	
+		                     		<li class="galeri"><a class="galeri" href="<?= $this->publicUrl('gallery', null); ?>/album/<?= $album['albumId']?>"><?= $album['albumName']?> </a></li>		                      		 
+		                     	<?php endforeach; ?>
+		                     	</ul>
+		                     </li>	                    				              	             
+			            </ul>  			             
+			        </li>			        
+			    </ul> 
+			    <!-- Navbar ends here -->
+			    	       
+		    </div>
+		    <!-- Menu ends here -->
+		    
+		    <!-- Hide menu arrow -->
+		    <div id="hide_menu">   
+		    	<?php if(!$this->pageVars['idPortfolio']): ?>
+		    	<a href="#" class="menu_visible">Hide menu</a> 
+		        	<!-- Hide menu tooltip - remove if you don't need it! -->
+		        	<div class="menu_tooltip">
+			        	<p>Hide the navigation</p>
+			        </div>  		     
+			    <?php endif;?>
+		    </div>
+		    <!-- Hide menu arrow ends here -->
+		       
+		</div>
+		<!-- Navigation ends here -->
+  
+			<?php echo $this->layout()->content; ?>
+  
+  </div>
+  <!-- Wrapper ends here -->
+  	
+<script>
+	Cufon.now();     
+
+	$("a[rel^='prettyPhoto']").prettyPhoto( {theme: 'dark_square', overlay_gallery: false} );
+
+	<?php if(APPLICATION_ENV != 'development'): ?>
+		
+		<?=	$this->domain->getGoogleAnalytics(); ?>
+		
+	<?php endif; ?>
+</script>
+</body>
+</html>	

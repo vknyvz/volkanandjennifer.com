@@ -1,0 +1,129 @@
+	<?php 
+		$this->headScript()->prependFile($this->baseUrl('/js/admin/albums.js'));
+	?>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {			
+			disableAllButtons();
+
+			$('#checkAll').bind('click', function() {				
+				checkAllCheckbox();				  
+			});	
+
+			$('#unCheckAll').bind('click', function() {				
+				uncheckAllCheckbox();				
+			});
+		});		
+	</script>
+	
+	<div id="deleteDialog" title="Delete Album(s)" style="display:none">
+		Are you sure you want to delete the selected album(s)?
+	</div>		
+	
+	<div id="sendEmailDialog" style="display:none"></div>
+	
+	<!--[if !IE]>start section<![endif]-->	
+	<div class="section table_section">
+		<!--[if !IE]>start title wrapper<![endif]-->
+		<div class="title_wrapper">
+			<h2>Album Management</h2>
+			<span class="title_wrapper_left"></span>
+			<span class="title_wrapper_right"></span>
+		</div>
+		<!--[if !IE]>end title wrapper<![endif]-->
+
+		<!--[if !IE]>start section content<![endif]-->
+		<div class="section_content">
+			<!--[if !IE]>start section content top<![endif]-->
+			<div class="sct">
+				<div class="sct_left">
+					<div class="sct_right">
+						<div class="sct_left">
+							<div class="sct_right">
+								
+								<form action="#">
+
+								<fieldset>
+								<!--[if !IE]>start table_wrapper<![endif]-->
+								<div class="table_wrapper">
+									<div class="table_wrapper_inner">
+									<table cellpadding="0" cellspacing="0" width="100%">
+										
+											<tr>						
+												<th style="width: 15px;"><a href="<?= $this->adminUrl(null, 'albums', array_merge($this->params, array('orderBy' 	   => 'albumId', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'albumId' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>" 
+													   class="<?= (($this->params['orderBy'] == 'albumId' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">ID#</a></th>													   
+												<th><a href="<?= $this->adminUrl(null, 'albums', array_merge($this->params, array('orderBy' 	   => 'albumName', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'albumName' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>"
+													   class="<?= (($this->params['orderBy'] == 'albumName' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Album Name</a></th>												   
+												
+												<th><a href="<?= $this->adminUrl(null, 'albums', array_merge($this->params, array('orderBy' 	   => 'albumYear',
+																																  'orderBySort' => (($this->params['orderBy'] == 'albumYear' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>"
+													   class="<?= (($this->params['orderBy'] == 'albumYear' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Album Year</a></th>
+												<th>Privacy</th>	   
+												<th># of Pictures</th>	   											
+												<th style="width: 25px;">Actions</th>
+											</tr>
+										<?php 
+											if (count($this->albums)):
+												foreach($this->albums as $album) :													
+										?>
+											<tr>
+												<td><?= $album->albumId; ?></td>
+												<td><?= $this->escape($album->albumName); ?></td>
+												<td style="width:100px;"><?= $this->escape($album->albumYear); ?></td>
+												<td style="width:50px"><?= $this->escape($this->albumPrivacy[$album['albumId']]); ?>
+												<td style="width:100px;"><?= $this->escape($this->albumTotal[$album['albumId']]); ?> <a href="<?= $this->adminUrl('browse', 'albums'); ?>/albumId/<?= $album['albumId']; ?>" title="Browse Pictures">Browse</a></td>
+												<td>	
+													<div class="actions" style="width:75px;">
+														<ul>
+															<li><a class="edit" href="<?= $this->adminUrl('edit', 'albums'); ?>/albumId/<?= $album->albumId; ?>" title="Edit Album"></a></li>															
+															<li><a class="delete" href="javascript:void(0);" onclick="showDeleteAlbumsDialog(<?= $album->albumId; ?>);" title="Delete Album"></a></li>
+															<li><input class="radio deleteSingle" name="albumIds[]" type="checkbox" value="<?= $album->albumId; ?>" /></li>	
+														</ul>
+													</div>
+												</td>
+											</tr>											
+											<?php endforeach; ?>
+												
+										<?php else: ?>
+												
+										<?php endif; ?>
+										
+									</table>
+									</div>
+
+								</div>
+								<!--[if !IE]>end table_wrapper<![endif]-->
+								
+								<!--[if !IE]>start table menu<![endif]-->
+								<div class="table_menu">									
+									<ul class="right">
+										<li><a href="javascript:void(0);" id="checkAll" class="button selectAll enabled"><span><span>CHECK ALL</span></span></a></li>
+										<li><a href="javascript:void(0);" id="unCheckAll" class="button unselectAll" ><span><span>UNCHECK ALL</span></span></a></li>	
+										<li><a href="javascript:void(0);" id="deleteAll" class="button deleteAll" onclick="showDeleteAlbumsDialog(0);" ><span><span>DELETE</span></span></a></li>						
+									</ul>
+								</div>
+								<!--[if !IE]>end table menu<![endif]-->
+								
+								<?= $this->paginationControl($this->albums, 'Sliding', 'users/paginator.phtml'); ?>
+								
+								</fieldset>
+
+								</form>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--[if !IE]>end section content top<![endif]-->
+			<!--[if !IE]>start section content bottom<![endif]-->
+			<span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+
+			<!--[if !IE]>end section content bottom<![endif]-->
+			
+		</div>
+		<!--[if !IE]>end section content<![endif]-->
+	</div>
+	<!--[if !IE]>end section<![endif]-->

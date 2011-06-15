@@ -1,0 +1,36 @@
+<!--[if !IE]>start footer<![endif]-->
+	<div id="footer">
+		<div id="footer_inner">
+		
+		<dl class="copy">
+			<dt><strong>Software written by <a href="http://www.vknyvz.com" target="_blank">Volkan Yavuz</a></strong></dt>
+			<dd>&copy; <?= date('Y'); ?> vknyvz.com All rights reserved.</dd>
+		</dl>
+		
+		<dl class="quick_links">
+			<dt><strong>Quick Links :</strong></dt>
+			<dd>
+				<ul>
+					<li><a href="<?= $this->adminUrl(); ?>">Dashboard </a></li>
+					<li><a href="<?= $this->adminUrl('admin', 'index'); ?>">My Account</a></li>
+					<li><a href="<?= $this->adminUrl(null, 'settings'); ?>">User Management</a></li>
+					<li><a href="<?= $this->adminUrl(null, 'albums'); ?>">Album Management</a></li>
+					<li><a href="<?= $this->adminUrl(null, 'pictures'); ?>">Pictures Management</a></li>
+					<li><a href="<?= $this->adminUrl(null, 'logs'); ?>">Logs</a></li>
+					<li class="last"><a href="<?= $this->adminUrl(); ?>auth/logout">Exit</a></li>
+				</ul>
+			</dd>
+		</dl>		
+		
+		<dl class="help_links">
+			<dt><strong>Powered by vkNgine v<?= vkNgine_Version::VERSION;?></strong></dt>
+			<dd>
+				<ul>
+					<li>Software written by Volkan Yavuz</li>
+				</ul>
+			</dd>
+		</dl>
+	
+		</div>
+	</div>
+	<!--[if !IE]>end footer<![endif]-->

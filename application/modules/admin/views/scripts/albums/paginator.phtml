@@ -1,0 +1,25 @@
+<?php if ($this->pageCount > 1): ?> 
+	<div class="pagination">		
+		<ul class="pag_list">
+		<?php if (isset($this->previous)): ?> 
+			<li><a class="button light_blue_btn" href="<?php echo $this->url(array('page' => $this->previous))?>"><span><span>PREVIOUS</span></span></a> </li>
+		<?php endif; ?> 
+				
+		<?php foreach ($this->pagesInRange as $page): ?> 
+		  <?php if ($page != $this->current): ?>
+		  	<li>
+			  <a href="<?php echo $this->url(array('page' => $page))?>">
+				  <?php echo $page; ?>
+			  </a>
+			</li>
+		  <?php else: ?>
+			<li><a class="current_page" href="#"><span><span><?php echo $page; ?></span></span></a></li>
+		  <?php endif; ?>
+		<?php endforeach; ?>
+		
+		<?php if (isset($this->next)): ?> 
+			<li><a class="button light_blue_btn" href="<?php echo $this->url(array('page' => $this->next))?>"><span><span>NEXT</span></span></a> </li>
+		<?php endif; ?> 
+		</ul>
+	</div> 
+<?php endif; ?>

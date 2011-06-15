@@ -1,0 +1,14 @@
+<div id="<?= $this->form->getName();?>Error"></div>
+
+<?= $this->form; ?>
+
+<script type="text/javascript">
+
+var options = {  
+	url: '<?=$this->adminUrl('edit-template', 'settings')?>',        
+	success: submit<?= $this->form->getName();?>,
+	dataType : 'json'		
+};	
+$('#<?= $this->form->getName();?>').ajaxForm(options);
+
+</script> 		

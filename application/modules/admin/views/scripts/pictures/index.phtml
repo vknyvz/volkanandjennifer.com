@@ -1,0 +1,138 @@
+	<?php 
+		$this->headScript()->prependFile($this->baseUrl('/js/admin/pictures.js'));
+		$this->headScript()->prependFile($this->baseUrl('/js/admin/facebox/facebox.js'));
+		
+		$this->headLink()->prependStylesheet($this->baseUrl('/js/admin/facebox/facebox.css'));			
+	?>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {			
+			disableAllButtons();
+
+			$('#checkAll').bind('click', function() {				
+				checkAllCheckbox();				  
+			});	
+
+			$('#unCheckAll').bind('click', function() {				
+				uncheckAllCheckbox();				
+			});
+				
+		  $('a[rel*=facebox]').facebox({
+	        loadingImage : '<?= $this->baseUrl('/js/admin/facebox/loading.gif')?>',
+	        closeImage   : '<?= $this->baseUrl('/js/admin/facebox/closelabel.png')?>'
+	      })
+	    })	  
+	</script>
+	
+	<div id="deleteDialog" title="Delete Picture(s)" style="display:none">
+		Are you sure you want to delete the selected picture(s)?
+	</div>		
+	
+	<div id="sendEmailDialog" style="display:none"></div>
+	
+	<!--[if !IE]>start section<![endif]-->	
+	<div class="section table_section">
+		<!--[if !IE]>start title wrapper<![endif]-->
+		<div class="title_wrapper">
+			<h2>Picture Management</h2>
+			<span class="title_wrapper_left"></span>
+			<span class="title_wrapper_right"></span>
+		</div>
+		<!--[if !IE]>end title wrapper<![endif]-->
+
+		<!--[if !IE]>start section content<![endif]-->
+		<div class="section_content">
+			<!--[if !IE]>start section content top<![endif]-->
+			<div class="sct">
+				<div class="sct_left">
+					<div class="sct_right">
+						<div class="sct_left">
+							<div class="sct_right">
+								
+								<form action="#">
+
+								<fieldset>
+								<!--[if !IE]>start table_wrapper<![endif]-->
+								<div class="table_wrapper">
+									<div class="table_wrapper_inner">
+									<table cellpadding="0" cellspacing="0" width="100%">
+										<tbody>
+											<tr>						
+												<th style="width: 15px;"><a href="<?= $this->adminUrl(null, 'pictures', array_merge($this->params, array('orderBy' 	   => 'pictureId', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'pictureId' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>" 
+													   class="<?= (($this->params['orderBy'] == 'pictureId' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">ID#</a></th>													   
+												<th><a href="<?= $this->adminUrl(null, 'pictures', array_merge($this->params, array('orderBy' 	   => 'albumId', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'albumId' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>"
+													   class="<?= (($this->params['orderBy'] == 'albumId' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Album</a></th>												   
+												
+												<th>Picture</th>
+												<th>Thumbnail Picture</th>											
+												<th style="width: 25px;">Actions</th>
+											</tr>
+										<?php 
+											if (count($this->pictures)):
+												foreach($this->pictures as $picture) :													
+										?>
+											<tr>
+												<td><?= $picture->pictureId; ?></td>
+												<td><?= $this->albumName[$picture['albumId']] ?> </td>
+												<td style="width:470px;">
+													<a href="<?= '/_dB/' . $picture['albumId'] . '/' . $picture->pictureName; ?>" rel="facebox"><?= $picture->pictureName; ?></a> | <b>Size:</b> <?= $this->fileSizeFormat($this->pictureInfo['filesize'][$picture['pictureId']]) ?> | 
+															<b>Width: </b><?= $this->pictureInfo['dimensions'][$picture['pictureId']][0] ?> <b>Height: </b><?= $this->pictureInfo['dimensions'][$picture['pictureId']][1] ?></b>  </td>
+												<td style="width:470px;">
+													<a href="<?= '/_dB/' . $picture['albumId'] . '/' . $picture->thumbnailName; ?>" rel="facebox"><?= $picture->thumbnailName; ?></a> | <b>Size:</b> <?= $this->fileSizeFormat($this->pictureInfo['filesizeThumbnail'][$picture['pictureId']]) ?> | 
+															<b>Width: </b><?= $this->pictureInfo['dimensionsThumbnail'][$picture['pictureId']][0] ?> <b>Height: </b><?= $this->pictureInfo['dimensionsThumbnail'][$picture['pictureId']][1] ?></b>  </td>
+												
+												<td>	
+													<div class="actions" style="width:75px;">
+														<ul>
+															<li><a class="edit" href="<?= $this->adminUrl('browse', 'albums'); ?>/albumId/<?= $picture->albumId; ?>" title="Edit Picture"></a></li>															
+															<li><a class="delete" href="javascript:void(0);" onclick="showDeletePicturesDialog(<?= $picture->pictureId; ?>);" title="Delete Picture"></a></li>
+															<li><input class="radio deleteSingle" name="pictureIds[]" type="checkbox" value="<?= $picture->pictureId; ?>" /></li>	
+														</ul>
+													</div>
+												</td>
+											</tr>											
+											<?php endforeach; ?>
+												
+										<?php else: ?>
+												
+										<?php endif; ?>
+										
+									</tbody></table>
+									</div>
+
+								</div>
+								<!--[if !IE]>end table_wrapper<![endif]-->
+								
+								<!--[if !IE]>start table menu<![endif]-->
+								<div class="table_menu">									
+									<ul class="right">
+										<li><a href="javascript:void(0);" id="checkAll" class="button selectAll enabled"><span><span>CHECK ALL</span></span></a></li>
+										<li><a href="javascript:void(0);" id="unCheckAll" class="button unselectAll" ><span><span>UNCHECK ALL</span></span></a></li>	
+										<li><a href="javascript:void(0);" id="deleteAll" class="button deleteAll" onclick="showDeletePicturesDialog(0);" ><span><span>DELETE</span></span></a></li>						
+									</ul>
+								</div>
+								<!--[if !IE]>end table menu<![endif]-->
+								
+								<?= $this->paginationControl($this->pictures, 'Sliding', 'pictures/paginator.phtml'); ?>
+								
+								</fieldset>
+
+								</form>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--[if !IE]>end section content top<![endif]-->
+			<!--[if !IE]>start section content bottom<![endif]-->
+			<span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+
+			<!--[if !IE]>end section content bottom<![endif]-->
+			
+		</div>
+		<!--[if !IE]>end section content<![endif]-->
+	</div>
+	<!--[if !IE]>end section<![endif]-->

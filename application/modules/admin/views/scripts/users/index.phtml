@@ -1,0 +1,146 @@
+	<?php 
+		$this->headScript()->prependFile($this->baseUrl('/js/admin/users.js'));
+	?>
+	
+	<script type="text/javascript">
+		$(document).ready(function() {			
+			disableAllButtons();
+
+			$('#checkAll').bind('click', function() {				
+				checkAllCheckbox();				  
+			});	
+
+			$('#unCheckAll').bind('click', function() {				
+				uncheckAllCheckbox();				
+			});
+				
+		});		
+	</script>
+	
+	<div id="deleteDialog" title="Delete User(s)" style="display:none">
+		Are you sure you want to delete the selected user(s)?
+	</div>		
+	
+	<div id="sendEmailDialog" style="display:none"></div>
+	
+	<!--[if !IE]>start section<![endif]-->	
+	<div class="section table_section">
+		<!--[if !IE]>start title wrapper<![endif]-->
+		<div class="title_wrapper">
+			<h2>User Management</h2>
+			<span class="title_wrapper_left"></span>
+			<span class="title_wrapper_right"></span>
+		</div>
+		<!--[if !IE]>end title wrapper<![endif]-->
+
+		<!--[if !IE]>start section content<![endif]-->
+		<div class="section_content">
+			<!--[if !IE]>start section content top<![endif]-->
+			<div class="sct">
+				<div class="sct_left">
+					<div class="sct_right">
+						<div class="sct_left">
+							<div class="sct_right">
+								
+								<form action="#">
+
+								<fieldset>
+								<!--[if !IE]>start table_wrapper<![endif]-->
+								<div class="table_wrapper">
+									<div class="table_wrapper_inner">
+									<table cellpadding="0" cellspacing="0" width="100%">
+										
+											<tr>						
+												<th><a href="<?= $this->adminUrl(null, 'users', array_merge($this->params, array('orderBy' 	   => 'userId', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'userId' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>" 
+													   class="<?= (($this->params['orderBy'] == 'userId' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">ID#</a></th>													   
+												<th><a href="<?= $this->adminUrl(null, 'users', array_merge($this->params, array('orderBy' 	   => 'email', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'email' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>"
+													   class="<?= (($this->params['orderBy'] == 'email' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Email</a></th>													   
+												<th><a href="<?= $this->adminUrl(null, 'users', array_merge($this->params, array('orderBy' 	   => 'firstName', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'firstName' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>"
+													   class="<?= (($this->params['orderBy'] == 'firstName' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Full Name</a></th>													   
+												<th><a href="<?= $this->adminUrl(null, 'users', array_merge($this->params, array('orderBy' 	   => 'active', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'active' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>" 
+													   class="<?= (($this->params['orderBy'] == 'active' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Active</a></th>													   
+												<th>Level</th>	
+												<th><a href="<?= $this->adminUrl(null, 'users', array_merge($this->params, array('orderBy' 	   => 'dateInserted', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'dateInserted' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>" 
+													   class="<?= (($this->params['orderBy'] == 'dateInserted' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Date Registered</a></th>													   
+												<th><a href="<?= $this->adminUrl(null, 'users', array_merge($this->params, array('orderBy' 	   => 'lastLogin', 
+																															     'orderBySort' => (($this->params['orderBy'] == 'lastLogin' && $this->params['orderBySort'] == 'DESC')  ? 'ASC' : 'DESC') ))) ?>" 
+													   class="<?= (($this->params['orderBy'] == 'lastLogin' && $this->params['orderBySort'] == 'DESC') ? 'desc' : 'asc') ?>">Last Login</a></th>												
+												<th style="width: 16px;">Actions</th>
+											</tr>
+										<?php 
+											if (count($this->users)):
+												foreach($this->users as $user) :												
+												
+										?>
+											<tr>
+												<td><?= $user->userId; ?></td>
+												<td><?= $this->escape($user->email); ?></td>
+												<td><?= $this->escape($user->firstName . ' ' . $user->lastName); ?> </td>
+												<td><?= $user->active == 'Y' ? '<span class="approved">Active</span>' : '<span class="pending">InActive</span>'; ?> </span></td>
+												<td><?= $this->escape($this->level[$user->userId]); ?></td>
+												<td><?= $this->escape($this->dateFormat($user->dateInserted, true, true)) ?> </td>
+												<td><?= ($user->lastLogin != '0000-00-00 00:00:00') ? $this->escape($this->dateFormat($user->lastLogin, true, true)) : 'Never'; ?></td>												
+												<td>	
+													<div class="actions" style="width:75px;">
+														<ul>
+															<li><a class="edit" href="<?= $this->adminUrl('edit', 'users'); ?>/userId/<?= $user->userId; ?>" title="Edit User"></a></li>															
+															<li><a class="delete" href="javascript:void(0);" onclick="showDeleteUsersDialog(<?= $user->userId; ?>);" title="Delete User"></a></li>
+															<li><input class="radio deleteSingle" name="userIds[]" type="checkbox" value="<?= $user->userId; ?>" /></li>	
+														</ul>
+													</div>
+												</td>
+											</tr>											
+											<?php endforeach; ?>
+												
+										<?php else: ?>
+												
+										<?php endif; ?>
+										
+									</table>
+									</div>
+
+								</div>
+								<!--[if !IE]>end table_wrapper<![endif]-->
+								
+								<!--[if !IE]>start table menu<![endif]-->
+								<div class="table_menu">									
+									<ul class="right">
+										<li><a href="javascript:void(0);" id="checkAll" class="button selectAll enabled"><span><span>CHECK ALL</span></span></a></li>
+										<li><a href="javascript:void(0);" id="unCheckAll" class="button unselectAll" ><span><span>UNCHECK ALL</span></span></a></li>	
+										<li><a href="javascript:void(0);" id="deleteAll" class="button deleteAll" onclick="showDeleteUsersDialog(0);" ><span><span>DELETE</span></span></a></li>						
+									</ul>
+								</div>
+								<!--[if !IE]>end table menu<![endif]-->
+								
+								<?= $this->paginationControl($this->users, 'Sliding', 'users/paginator.phtml'); ?>
+								
+								</fieldset>
+
+								</form>
+								
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--[if !IE]>end section content top<![endif]-->
+			<!--[if !IE]>start section content bottom<![endif]-->
+			<span class="scb"><span class="scb_left"></span><span class="scb_right"></span></span>
+
+			<!--[if !IE]>end section content bottom<![endif]-->
+			
+		</div>
+		<!--[if !IE]>end section content<![endif]-->
+	</div>
+	<!--[if !IE]>end section<![endif]-->
+	
+<script type="text/javascript">
+	$('.sendEmailDialog').bind('click', function() {				
+		sendEmailDialog($(this).attr('ref'), $(this).attr('rel'));	
+	});	
+</script>	

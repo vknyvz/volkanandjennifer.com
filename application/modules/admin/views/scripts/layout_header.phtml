@@ -1,0 +1,119 @@
+		<!--[if !IE]>start head<![endif]-->
+		<div id="head">
+			
+			<!--[if !IE]>start logo and user details<![endif]-->
+			<div id="logo_user_details">
+				<h1 id="logo"><a href="<?= $this->adminUrl(); ?>">vkNgine Administration Panel</a></h1>
+				<!--[if !IE]>start user details<![endif]-->
+				<div id="user_details">
+					<ul id="user_details_menu">
+						<li>Welcome <strong><?= $this->user->getFullName() ?></strong></li>
+						<li>
+							<ul id="user_access">
+								<li class="first"><a href="<?= $this->adminUrl('admin', 'index'); ?>">My account</a></li>
+								<li class="last"><a href="<?= $this->adminUrl(); ?>auth/logout">Log out</a></li>
+							</ul>
+						</li>						
+					</ul>
+					<div id="server_details">
+					<?php
+						$currentTime = new Zend_Date();
+						$time = $currentTime->toString(Zend_Date::HOUR) . ':' . 
+									$currentTime->toString(Zend_Date::MINUTE) . ' ' . date('A');
+					?>
+						<dl>
+							<dt>Server time :</dt>
+							<dd><?= $time; ?></dd>
+						</dl>
+					
+						<dl>
+							<dt>Last login IP :</dt>
+							<dd><?= $this->lastLoggedInInfo['ip']; ?></dd>
+						</dl>
+					</div>
+					
+					<!--[if !IE]>start search<![endif]-->
+					<div id="search_wrapper">
+						<form action="<?= $this->adminUrl(null, 'users'); ?>" method="post">
+							<fieldset>
+								<label>
+									<input id="searchUser" class="text" name="query" value="Search a user" type="text"/>
+								</label>
+								<span class="go"><input name="" type="submit" /></span>
+							</fieldset>
+						</form>
+						<ul id="search_wrapper_menu">
+							<li class="last"><a id="searchUsers" href="javascript:void(0);">Advanced Search</a></li>							
+						</ul>
+					</div>
+				<!--[if !IE]>end search<![endif]-->
+				</div>				
+				<!--[if !IE]>end user details<![endif]-->				
+			</div>			
+			<!--[if !IE]>end logo end user details<![endif]-->
+			<!--[if !IE]>start menus_wrapper<![endif]-->
+			<div id="menus_wrapper">				
+				<div id="main_menu">
+					<ul>
+						<li><a href="<?= $this->adminUrl(); ?>" <?= ($this->params['controller'] == 'index' or $this->params['controller'] == 'settings') ? 'class="selected"' : ''; ?>><span><span>Dashboard</span></span></a></li>
+						<li><a href="<?= $this->adminUrl(null, 'users'); ?>" <?= ($this->params['controller'] == 'users') ? 'class="selected"' : ''; ?>><span><span>User Management</span></span></a></li>
+						<li><a href="<?= $this->adminUrl(null, 'albums'); ?>" <?= ($this->params['controller'] == 'albums') ? 'class="selected"' : ''; ?>><span><span>Album Management</span></span></a></li>
+						<li><a href="<?= $this->adminUrl(null, 'pictures'); ?>" <?= ($this->params['controller'] == 'pictures') ? 'class="selected"' : ''; ?>><span><span>Pictures Management</span></span></a></li>
+						<li><a href="<?= $this->adminUrl(null, 'logs'); ?>" <?= ($this->params['controller'] == 'logs') ? 'class="selected"' : ''; ?>><span><span>Logs</span></span></a></li>						
+					</ul>
+				</div>				
+				<div id="sec_menu">
+					<ul>
+						<?php
+							if($this->params['controller'] == 'index' or $this->params['controller'] == 'settings') :
+						?>
+							<li><a href="<?= $this->adminUrl(null, 'settings'); ?>" class="sm1">Web Site Settings</a></li>
+						<?php 
+							elseif($this->params['controller'] == 'users') :
+						?>
+							<li><a href="<?= $this->adminUrl(null, 'users'); ?>" class="sm4">View All Users</a></li>
+							<li><a href="<?= $this->adminUrl('edit', 'users'); ?>" class="sm4">Add New User</a></li>							
+						<?php 
+							elseif($this->params['controller'] == 'albums') :
+						?>
+							<li><a href="<?= $this->adminUrl(null, 'albums'); ?>" class="sm4">View All Albums</a></li>
+							<li><a href="<?= $this->adminUrl('edit', 'albums'); ?>" class="sm4">Add New Album</a></li>		
+						<?php 
+							elseif($this->params['controller'] == 'pictures') :
+						?>
+							<li><a href="<?= $this->adminUrl(null, 'pictures'); ?>" class="sm4">View All Pictures</a></li>
+							<li><a href="<?= $this->adminUrl('edit', 'pictures'); ?>" class="sm4">Add New Picture</a></li>								
+						<?php 	
+							elseif($this->params['controller'] == 'logs') :
+						?>
+							<li><a href="<?= $this->adminUrl('framework', 'logs'); ?>" class="sm4">Framework Logs</a></li>
+							<li><a href="<?= $this->adminUrl('vkngine', 'logs'); ?>" class="sm4">vkNgine Logs</a></li>
+							<li><a href="<?= $this->adminUrl('activity', 'logs'); ?>" class="sm4">Activity Traffic</a></li>
+							<li><a href="<?= $this->adminUrl('login', 'logs'); ?>" class="sm4">Login Traffic</a></li>
+						<?php 
+							endif;
+						?>										
+					</ul>
+				</div>
+			</div>
+			<!--[if !IE]>end menus_wrapper<![endif]-->
+			
+		</div>
+		<!--[if !IE]>end head<![endif]-->
+		
+		<script type="text/javascript">
+			$('#searchUsers').bind('click', function() {			
+				searchUsers();
+			});	
+			
+			$('#searchUser').blur(function() {
+				if ($(this).val() == '') {$(this).val('Search a user') ;}
+			});
+
+			$('#searchUser').focus(function() {
+				if ($(this).val() == 'Search a user') {$(this).val('');}
+			});				
+			$("#searchUser").autocomplete({
+				source: "<?=$this->adminUrl('search-auto', 'users')?>"
+			});		
+		</script>

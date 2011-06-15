@@ -1,0 +1,21 @@
+<style>
+	#previewTemplateDialog table.content {background-color:#DD455d;}
+	#previewTemplateDialog table {background:none repeat scroll 0 0 #FFFFFF;width: 580px;}
+	#previewTemplateDialog td {border-bottom: 0px;}
+	#previewTemplateDialog tr td {vertical-align: top;}		
+	#previewTemplateDialog {background:none repeat scroll 0 0 #FEF9DE !important;padding: 0px 15px 0px 15px;}
+	
+	.ui-state-highlight-pending {padding-bottom: 0px;}
+	
+	.first table tbody{ background-color: #FEF9DE;}
+	.first td{ background-color: #FEF9DE;}
+	.body td{ background-color: #FFFFFF;}
+	
+	.first table { background-color: #FEF9DE;}
+	.footer td {padding: 0px;}
+</style>
+
+<?php 			
+	if (in_array($this->template['type'], $this->types)) {
+		echo $this->partial('templates/' . $this->template->templateFile. '', 'public', $this->partialParams);
+	}	
