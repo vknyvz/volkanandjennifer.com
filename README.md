@@ -1,8 +1,11 @@
- My personal photo gallery application
+My personal photo gallery application
+=============================================
   
-   Technology
-      - Written for LAMP environment.
-	  - OO PHP5, Zend Framework, jQuery.
+   ### Application Full Source Code ###
+  
+   #### Technology ####
+      - Written for LAMP environment. <br>
+	  - OO PHP5, Zend Framework, jQuery. <br>
 	  
    Features
       - Application has an admin panel which controls the front-end.
