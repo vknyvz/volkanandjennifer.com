@@ -22,6 +22,6 @@ My personal photo gallery application
 <br>
 It can be viewed from http://www.volkanandjennifer.com	<br>
 	 
-Volkan Yavuz
+Volkan Yavuz <br>
 Software Engineer
 		 
