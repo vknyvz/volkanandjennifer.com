@@ -11,6 +11,7 @@ My personal photo gallery application
       - Application has an admin panel which controls the front-end. 
 	  - Admin panel has the following features 
 	     - Different user levels/permissions, activate/deactivate users 
+		 - Generated image links are only valid for 1 hour, this interval time can be chaned from the bootstrap file. This is to avoid hot-linking.
 		 - Add/Delete/Edit Albums 
 		 - Browse Albums per albums 
 		 - Add/Delete Pictures 
