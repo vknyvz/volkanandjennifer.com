@@ -1,11 +1,11 @@
 My personal photo gallery application
-=============================================
+-----------------------------------------------
   
 ### Application Full Source Code ###
   
 #### Technology ####
   - Written for LAMP environment. <br>
-  - OO PHP5, MySQL, Zend Framework, jQuery. <br>
+  - PHP, MySQL, Zend Framework, jQuery. <br>
 	  
 #### Features ####
       - Application has an admin panel which controls the front-end. 
@@ -21,7 +21,8 @@ My personal photo gallery application
 		 - Comprehensive Logging System for the entire application, all actions are logged. 
 
 <br>
-It can be viewed from http://www.volkanandjennifer.com	<br>
+Application can't be viewed online because I am using for my personal pictures, however
+you may clone this and run it on your local environment.
 	 
 Volkan Yavuz <br>
 Software Engineer
